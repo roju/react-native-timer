@@ -6,7 +6,7 @@ const pauseImage = require('../images/pause.png');
 
 const StartButton = (props) => {
 
-    const image = props.isPaused ? playImage : pauseImage;
+    const image = !props.isRunning ? playImage : pauseImage;
 
     // check styles prop, initialize to empty object
 

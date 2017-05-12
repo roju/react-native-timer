@@ -2,25 +2,42 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import TimerCell from './timer-cell';
-
 import {
     addTimer,
     updateTime,
     selectTimer,
-    startTimer
+    toggleTimer
 } from '../actions';
 
 
 class TimerList extends Component {
+    static navigationOptions = {
+      title: 'Timers',
+    };
 
     constructor(props) {
         super(props);
         this.state = {newName:''};
     }
+
     render() {
-        this.timerCells = this.props.timers.map((timer, i)=> {
+        const {navigate} = this.props.navigation;
+
+        this.timerCells = this.props.timers.map((timer, i) => {
             console.log("list timer name: " + timer.name);
-            return <TimerCell key={i} name={timer.name} time={timer.time} isPaused={timer.isPaused}/>
+            return <TimerCell
+                key={i}
+                name={timer.name}
+                time={timer.time}
+                isRunning={timer.isRunning}
+                onStartTimer={() => {
+                    this.props.toggleTimer(i);
+                }}
+                onPress={() => {
+                    this.props.selectTimer(i);
+                    navigate("Details");
+                }}
+            />
         });
         return (
             <View style = {styles.container}>
@@ -29,13 +46,13 @@ class TimerList extends Component {
                 </ScrollView>
                 <View style={styles.inputBox}>
                     <TextInput style={styles.input} value={this.state.name}
-                        onChangeText={(text)=>{
+                        onChangeText={(text) => {
                             this.setState({name:text});
                         }}
                     />
                     <TouchableOpacity
                         style={styles.addButton}
-                        onPress = {()=>{
+                        onPress = {() => {
                             console.log("name: " + this.state.name);
                             this.props.addTimer(this.state.name)}}>
                     </TouchableOpacity>
@@ -47,19 +64,21 @@ class TimerList extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        timers: state.timers
+        timers: state.timers,
+        selectedTimer: state.selectedTimer
     }
 }
 
 export default connect(mapStateToProps, {
-    addTimer, updateTime, selectTimer, startTimer
+    addTimer, updateTime, selectTimer, toggleTimer
 })(TimerList);
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#88f'
     },
     text: {
         fontSize: 50,

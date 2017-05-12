@@ -4,11 +4,16 @@ import StartButton from './start-btn';
 
 const TimerCell = (props) => {
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.onPress}>
             <View style = {styles.container}>
                 <Text style = {styles.items}>{props.name}</Text>
                 <Text style = {[styles.items, styles.time]}>{props.time}</Text>
-                <StartButton style = {styles.button} isPaused = {props.isPaused} size = {50}/>
+                <StartButton
+                    style = {styles.button}
+                    isRunning = {props.isRunning}
+                    size = {50}
+                    onPress = {props.onStartTimer}
+                />
             </View>
         </TouchableOpacity>
     );

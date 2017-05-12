@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import timerReducer from './timer-reducer';
-import timerSelectReducer from './timer-select-reducer';
+import selectedTimerReducer from './selected-timer-reducer';
 
 export default combineReducers({
     timers: timerReducer,
-    selectedTimer: timerSelectReducer
+    selectedTimer: selectedTimerReducer
 });
